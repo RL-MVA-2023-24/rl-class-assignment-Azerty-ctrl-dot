@@ -185,7 +185,7 @@ class ProjectAgent:
         torch.save(self.model.state_dict(), path)
 
     def load(self):
-        self.model.load_state_dict(torch.load('save/model.pth'))
+        self.model.load_state_dict(torch.load('model.pth'))
 
 
 """
@@ -194,6 +194,6 @@ Training
 agent = ProjectAgent()
 if False:
     episode_return = agent.train(env, 200)
-    agent.save('save/model.pth')
+    agent.save('model.pth')
 else:
     print("Pas de train")
