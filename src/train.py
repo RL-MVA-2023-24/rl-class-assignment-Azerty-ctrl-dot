@@ -78,7 +78,7 @@ class DQN(nn.Module):
 BUFFER_SIZE = 1000000
 BATCH_SIZE = 1024
 GAMMA = 0.95
-EPS_MAX = 1.
+EPS_MAX = 0.99
 EPS_MIN = 0.01
 EPS_DECAY = 10000
 EPS_DELAY = 500
@@ -116,7 +116,7 @@ class ProjectAgent:
 
     def act(self, observation, use_random=False):
         with torch.no_grad():
-            Q = self.model(torch.Tensor(state).unsqueeze(0))
+            Q = self.model(torch.Tensor(observation).unsqueeze(0))
             return torch.argmax(Q).item()
 
     def train(self, env, max_episode):
