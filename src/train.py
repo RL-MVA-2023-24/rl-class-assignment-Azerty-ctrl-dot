@@ -82,8 +82,8 @@ BATCH_SIZE = 1000
 GAMMA = 0.95
 EPS_MAX = 0.99
 EPS_MIN = 0.01
-EPS_DECAY = 10000
-EPS_DELAY = 500
+EPS_DECAY = 20000
+EPS_DELAY = 2000
 LR = 0.0001
 TAU = 0.005
 NB_GRADIENT_STEPS = 10
@@ -194,7 +194,7 @@ class ProjectAgent:
 Training
 """
 agent = ProjectAgent()
-if False:
+if True:
     episode_return = agent.train(env, 500)
     print("Best episode return: ",max(episode_return))
     agent.save('src/model.pth')
