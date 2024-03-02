@@ -49,19 +49,25 @@ class DQN(nn.Module):
     def __init__(self, n_observations, n_actions):
         super(DQN, self).__init__()
 
-        self.layer1 = nn.Linear(n_observations, 512)
-        self.layer2 = nn.Linear(512, 512)
-        self.layer3 = nn.Linear(512, 512)
-        self.layer4 = nn.Linear(512, 512)
-        self.layer5 = nn.Linear(512, n_actions)
+        self.layer1 = nn.Linear(n_observations, 200)
+        self.layer2 = nn.Linear(200, 200)
+        self.layer3 = nn.Linear(200, 200)
+        self.layer4 = nn.Linear(200, 200)
+        self.layer5 = nn.Linear(200, 200)
+        self.layer6 = nn.Linear(200, 200)
+        self.layer7 = nn.Linear(200, 200)
+        self.layer8 = nn.Linear(200, n_actions)
 
     def forward(self, x):
         x = F.relu(self.layer1(x))
         x = F.relu(self.layer2(x))
         x = F.relu(self.layer3(x))
         x = F.relu(self.layer4(x))
+        x = F.relu(self.layer5(x))
+        x = F.relu(self.layer6(x))
+        x = F.relu(self.layer7(x))
 
-        return self.layer5(x)
+        return self.layer8(x)
 
 
 # BATCH_SIZE is the number of transitions sampled from the replay buffer
@@ -76,8 +82,8 @@ BATCH_SIZE = 1024
 GAMMA = 0.95
 EPS_MAX = 0.99
 EPS_MIN = 0.01
-EPS_DECAY = 10000
-EPS_DELAY = 500
+EPS_DECAY = 20000
+EPS_DELAY = 2000
 LR = 0.0001
 TAU = 0.005
 NB_GRADIENT_STEPS = 10
@@ -188,8 +194,13 @@ class ProjectAgent:
 Training
 """
 agent = ProjectAgent()
-if False:
+if True:
     episode_return = agent.train(env, 200)
+    print("Best episode return: ",max(episode_return))
     agent.save('src/model.pth')
+
+    import matplotlib as plt
+    plt.plot(episode_return)
+    plt.show()
 else:
     print("Pas de train")
