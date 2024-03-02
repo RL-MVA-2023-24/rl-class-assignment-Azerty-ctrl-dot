@@ -76,14 +76,14 @@ class DQN(nn.Module):
 # EPS_END is the minimum value of epsilon
 # EPS_DECAY controls the rate of exponential decay of epsilon, higher means a slower decay
 # EPS_DELAY is the delay on which we keep the same value of epsilon
-# LR is the learning rate of the ``AdamW`` optimizer
+# LR is the learning rate of the ``Adam`` optimizer
 BUFFER_SIZE = 1000000
-BATCH_SIZE = 1024
+BATCH_SIZE = 1000
 GAMMA = 0.95
 EPS_MAX = 0.99
 EPS_MIN = 0.01
-EPS_DECAY = 20000
-EPS_DELAY = 2000
+EPS_DECAY = 10000
+EPS_DELAY = 500
 LR = 0.0001
 TAU = 0.005
 NB_GRADIENT_STEPS = 10
@@ -195,12 +195,8 @@ Training
 """
 agent = ProjectAgent()
 if False:
-    episode_return = agent.train(env, 200)
+    episode_return = agent.train(env, 500)
     print("Best episode return: ",max(episode_return))
     agent.save('src/model.pth')
-
-    import matplotlib as plt
-    plt.plot(episode_return)
-    plt.show()
 else:
     print("Pas de train")
