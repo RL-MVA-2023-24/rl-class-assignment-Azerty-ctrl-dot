@@ -194,7 +194,7 @@ class ProjectAgent:
 Training
 """
 agent = ProjectAgent()
-if True:
+if False:
     episode_return = agent.train(env, 500)
     print("Best episode return: ",max(episode_return))
     agent.save('src/model.pth')
