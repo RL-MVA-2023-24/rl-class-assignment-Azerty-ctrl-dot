@@ -178,9 +178,6 @@ class ProjectAgent:
             # next transition
             step += 1
             if done or trunc:
-                if episode % 100 == 0:
-                    print("On enregistre le modèle")
-                    self.save('model.pth')
 
                 episode += 1
                 print("Episode ", '{:3d}'.format(episode), 
