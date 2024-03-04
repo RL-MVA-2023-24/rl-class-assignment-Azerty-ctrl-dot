@@ -57,21 +57,14 @@ class DQN(nn.Module):
         self.layer6 = nn.Linear(200, 200)
         self.layer7 = nn.Linear(200, 200)
         self.layer8 = nn.Linear(200, n_actions)
-        self.dropout = nn.Dropout(p=0.1)
 
     def forward(self, x):
         x = F.relu(self.layer1(x))
-        x = self.dropout(x)
         x = F.relu(self.layer2(x))
-        x = self.dropout(x)
         x = F.relu(self.layer3(x))
-        x = self.dropout(x)
         x = F.relu(self.layer4(x))
-        x = self.dropout(x)
         x = F.relu(self.layer5(x))
-        x = self.dropout(x)
         x = F.relu(self.layer6(x))
-        x = self.dropout(x)
         x = F.relu(self.layer7(x))
 
         return self.layer8(x)
@@ -87,10 +80,10 @@ class DQN(nn.Module):
 BUFFER_SIZE = 1000000
 BATCH_SIZE = 1000
 GAMMA = 0.95
-EPS_MAX = 1.
+EPS_MAX = 0.99
 EPS_MIN = 0.01
-EPS_DECAY = 10000
-EPS_DELAY = 500
+EPS_DECAY = 20000
+EPS_DELAY = 2000
 LR = 0.0001
 TAU = 0.005
 NB_GRADIENT_STEPS = 10
@@ -169,16 +162,13 @@ class ProjectAgent:
             target_state_dict = self.target_model.state_dict()
             model_state_dict = self.model.state_dict()
             tau = self.tau
-
             for key in model_state_dict:
                 target_state_dict[key] = tau*model_state_dict[key] + (1-tau)*target_state_dict[key]
-
             self.target_model.load_state_dict(target_state_dict)
 
             # next transition
             step += 1
             if done or trunc:
-
                 episode += 1
                 print("Episode ", '{:3d}'.format(episode), 
                       ", epsilon ", '{:6.2f}'.format(epsilon), 
@@ -190,8 +180,6 @@ class ProjectAgent:
                 episode_cum_reward = 0
             else:
                 state = next_state
-
-        self.model.eval()
 
         return episode_return
 
@@ -210,5 +198,9 @@ if False:
     episode_return = agent.train(env, 500)
     print("Best episode return: ",max(episode_return))
     agent.save('src/model.pth')
+
+    import matplotlib as plt
+    plt.plot(episode_return)
+    plt.show()
 else:
     print("Pas de train")
