@@ -57,7 +57,7 @@ class DQN(nn.Module):
         self.layer6 = nn.Linear(200, 200)
         self.layer7 = nn.Linear(200, 200)
         self.layer8 = nn.Linear(200, n_actions)
-        self.dropout = nn.Dropout(p=0.5)
+        self.dropout = nn.Dropout(p=0.1)
 
     def forward(self, x):
         x = F.relu(self.layer1(x))
@@ -73,7 +73,6 @@ class DQN(nn.Module):
         x = F.relu(self.layer6(x))
         x = self.dropout(x)
         x = F.relu(self.layer7(x))
-        x = self.dropout(x)
 
         return self.layer8(x)
 
@@ -88,10 +87,10 @@ class DQN(nn.Module):
 BUFFER_SIZE = 1000000
 BATCH_SIZE = 1000
 GAMMA = 0.95
-EPS_MAX = 0.99
+EPS_MAX = 1.
 EPS_MIN = 0.01
-EPS_DECAY = 20000
-EPS_DELAY = 2000
+EPS_DECAY = 10000
+EPS_DELAY = 500
 LR = 0.0001
 TAU = 0.005
 NB_GRADIENT_STEPS = 10
@@ -173,12 +172,16 @@ class ProjectAgent:
 
             for key in model_state_dict:
                 target_state_dict[key] = tau*model_state_dict[key] + (1-tau)*target_state_dict[key]
-                
+
             self.target_model.load_state_dict(target_state_dict)
 
             # next transition
             step += 1
             if done or trunc:
+                if episode % 100 == 0:
+                    print("On enregistre le modèle")
+                    self.save('model.pth')
+
                 episode += 1
                 print("Episode ", '{:3d}'.format(episode), 
                       ", epsilon ", '{:6.2f}'.format(epsilon), 
