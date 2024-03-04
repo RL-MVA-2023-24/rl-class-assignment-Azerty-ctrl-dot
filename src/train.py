@@ -71,7 +71,7 @@ class DQN(nn.Module):
 
 
 # BATCH_SIZE is the number of transitions sampled from the replay buffer
-# GAMMA is the discount factor as mentioned in the previous section
+# GAMMA is the discount factor 
 # EPS_MAX is the maximum value of epsilon
 # EPS_END is the minimum value of epsilon
 # EPS_DECAY controls the rate of exponential decay of epsilon, higher means a slower decay
