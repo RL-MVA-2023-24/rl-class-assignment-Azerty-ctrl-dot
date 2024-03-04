@@ -162,8 +162,10 @@ class ProjectAgent:
             target_state_dict = self.target_model.state_dict()
             model_state_dict = self.model.state_dict()
             tau = self.tau
+            
             for key in model_state_dict:
                 target_state_dict[key] = tau*model_state_dict[key] + (1-tau)*target_state_dict[key]
+                
             self.target_model.load_state_dict(target_state_dict)
 
             # next transition
@@ -198,9 +200,5 @@ if False:
     episode_return = agent.train(env, 500)
     print("Best episode return: ",max(episode_return))
     agent.save('src/model.pth')
-
-    import matplotlib as plt
-    plt.plot(episode_return)
-    plt.show()
 else:
     print("Pas de train")
